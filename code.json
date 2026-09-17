@@ -1,0 +1,217 @@
+[
+    {
+        "id": "2a0371c7129793c5",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6eeac507e3f625d4",
+        "type": "inject",
+        "z": "2a0371c7129793c5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "8b16b9c1f57f4a96"
+            ]
+        ]
+    },
+    {
+        "id": "8b16b9c1f57f4a96",
+        "type": "http request",
+        "z": "2a0371c7129793c5",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "", // put your APi here
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "ac1ea3ca4876c5b1"
+            ]
+        ]
+    },
+    {
+        "id": "ac1ea3ca4876c5b1",
+        "type": "json",
+        "z": "2a0371c7129793c5",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 570,
+        "y": 180,
+        "wires": [
+            [
+                "f6ccb500012d94ae",
+                "98dad9af6da65b97"
+            ]
+        ]
+    },
+    {
+        "id": "f6ccb500012d94ae",
+        "type": "function",
+        "z": "2a0371c7129793c5",
+        "name": "conversione temp",
+        "func": "msg.payload = msg.payload.main.temp - 273.15;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 140,
+        "wires": [
+            [
+                "4aa1a6d3866935d7",
+                "8481efcdf0ee32ae"
+            ]
+        ]
+    },
+    {
+        "id": "4aa1a6d3866935d7",
+        "type": "debug",
+        "z": "2a0371c7129793c5",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "6bc1d6091ccfa78d",
+        "type": "mqtt out",
+        "z": "2a0371c7129793c5",
+        "name": "mqtt out",
+        "topic": "channels//publish/fields/field2", //put your channel here
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e2c838befd76d951",
+        "x": 960,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "98dad9af6da65b97",
+        "type": "function",
+        "z": "2a0371c7129793c5",
+        "name": "umidità ",
+        "func": "msg.payload = msg.payload.main.humidity;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 240,
+        "wires": [
+            [
+                "6bc1d6091ccfa78d",
+                "9eff16c555b6dbd5"
+            ]
+        ]
+    },
+    {
+        "id": "9eff16c555b6dbd5",
+        "type": "debug",
+        "z": "2a0371c7129793c5",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8481efcdf0ee32ae",
+        "type": "mqtt out",
+        "z": "2a0371c7129793c5",
+        "name": "mqtt out",
+        "topic": "channels//publish/fields/field1", //put your channel here
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e2c838befd76d951",
+        "x": 1000,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "e2c838befd76d951",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt3.thingspeak.com",
+        "port": "1883",
+        "clientid": "", //put your MQTT client ID here
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
